@@ -1,14 +1,10 @@
-# Virtual Environment
-.venv/
-venv/
-env/
-
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -25,18 +21,21 @@ wheels/
 .installed.cfg
 *.egg
 
-# PyCharm
+# Virtual Environment
+venv/
+ENV/
+
+# IDE
+.vscode/
 .idea/
 
-# VS Code
-.vscode/
+# Project specific
+models/*.ckpt
+data/real/*.wav
+data/fake/*.wav
+*.h5
 
-# Model checkpoints and data
-*.ckpt
-*.joblib
-datasets/
-
-# Pytest
-.pytest_cache/
-.coverage
-htmlcov/
+# Audio files
+*.wav
+*.mp3
+*.flac

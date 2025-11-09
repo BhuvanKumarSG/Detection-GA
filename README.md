@@ -1,156 +1,132 @@
-# Voice Deepfake Detection with Genetic Algorithm Optimization# Voice Deepfake Detection with Genetic Algorithm Optimization# Deepfake Voice Detection (baseline + bio-inspired optimizer)
+# Voice Deepfake Detection System# Deepfake Voice Detection (baseline + bio-inspired optimizer)
 
 
 
-This project implements a voice deepfake detection system that is optimized using genetic algorithms. The system can detect artificially synthesized or manipulated voice recordings by analyzing audio features and patterns.
+This project implements a voice deepfake detection system using two different models:This project provides a small Python pipeline to:
+
+1. A baseline CNN model- extract audio features (MFCCs),
+
+2. A GA-optimized model with enhanced architecture- train a baseline classifier (Random Forest),
+
+- optimize hyperparameters using a simple Genetic Algorithm (bio-inspired),
+
+## Project Structure- and predict whether an input audio sample is a deepfake or bona fide.
 
 
 
-## FeaturesThis project implements a voice deepfake detection system that is optimized using genetic algorithms. The system can detect artificially synthesized or manipulated voice recordings by analyzing audio features and patterns.This project provides a small Python pipeline to:
+```Key assumptions:
 
+detection/- You provide a labeled dataset in WAV format under a directory with two subfolders: `real/` and `fake/` (or `bonafide/` and `spoof/`).
 
+├── data/- If you don't have a dataset, the repository contains a small synthetic test that runs locally.
 
-- Audio feature extraction and analysis- extract audio features (MFCCs),
+│   ├── real/      # Real voice samples
 
-- Deep neural network-based classification
+│   └── fake/      # Deepfake voice samplesFiles:
 
-- Genetic algorithm optimization of model architecture and hyperparameters## Features- train a baseline classifier (Random Forest),
+├── models/        # Saved model checkpoints- `src/audio_utils.py` — audio loading/recording and MFCC extraction.
 
-- Sample dataset for testing
+├── src/- `src/models.py` — baseline classifier and GA-based hyperparameter optimizer.
 
-- Pretrained model checkpoints- optimize hyperparameters using a simple Genetic Algorithm (bio-inspired),
+│   ├── audio_utils.py   # Audio processing utilities- `src/main.py` — CLI to train/optimize and predict on an audio file or a live recording.
 
+│   ├── models.py        # Model definitions- `tests/test_pipeline.py` — minimal unit test.
 
+│   └── detector.py      # Main detector class- `requirements.txt` — libraries needed.
 
-## Getting Started- Audio feature extraction and analysis- and predict whether an input audio sample is a deepfake or bona fide.
+├── scripts/      # Additional utility scripts
 
+├── main.py      # Command-line interfaceHow to try quickly (Windows PowerShell):
 
+├── environment.yml  # Conda environment specification
 
-1. Create a virtual environment:- Deep neural network-based classification
-
-```bash
-
-python -m venv .venv- Genetic algorithm optimization of model architecture and hyperparametersKey assumptions:
-
-source .venv/bin/activate  # On Linux/Mac
-
-.venv\Scripts\activate     # On Windows- Sample dataset for testing- You provide a labeled dataset in WAV format under a directory with two subfolders: `real/` and `fake/` (or `bonafide/` and `spoof/`).
-
-```
-
-- Pretrained model checkpoints- If you don't have a dataset, the repository contains a small synthetic test that runs locally.
-
-2. Install dependencies:
-
-```bash
-
-pip install -r requirements.txt
-
-```## Getting StartedFiles:
-
-
-
-3. Run the example:- `src/audio_utils.py` — audio loading/recording and MFCC extraction.
-
-```bash
-
-python src/main.py1. Create a virtual environment:- `src/models.py` — baseline classifier and GA-based hyperparameter optimizer.
-
-```
-
-```bash- `src/main.py` — CLI to train/optimize and predict on an audio file or a live recording.
-
-## Project Structure
-
-python -m venv .venv- `tests/test_pipeline.py` — minimal unit test.
-
-- `src/`: Source code
-
-  - `audio_utils.py`: Audio processing utilitiessource .venv/bin/activate  # On Linux/Mac- `requirements.txt` — libraries needed.
-
-  - `models.py`: Model architectures
-
-  - `main.py`: Main execution script.venv\Scripts\activate     # On Windows
-
-- `scripts/`: Helper scripts
-
-  - `make_sample_dataset.py`: Generate sample dataset```How to try quickly (Windows PowerShell):
-
-  - `prepare_asvspoof2019.py`: ASVspoof2019 dataset preparation
-
-  - `compare_ckpts.py`: Compare model checkpoints
-
-- `tests/`: Unit tests
-
-- `sample_dataset/`: Sample audio files for testing2. Install dependencies:1) Create and activate a venv, then install requirements:
-
-  - `real/`: Real voice samples  
-
-  - `fake/`: Deepfake voice samples```bash
-
-- `requirements.txt`: Python dependencies
-
-pip install -r requirements.txt```powershell
-
-## Testing
-
-```python -m venv .venv; .\.venv\Scripts\Activate.ps1
-
-```bash
-
-pytest tests/pip install -r requirements.txt
-
-```
-
-3. Run the example:```
-
-## License
-
-```bash
-
-MIT License
-python src/main.py2) Run the tests:
+└── README.md1) Create and activate a venv, then install requirements:
 
 ```
 
 ```powershell
 
-## Project Structurepytest -q
+## Setuppython -m venv .venv; .\.venv\Scripts\Activate.ps1
 
-```
+pip install -r requirements.txt
 
-- `src/`: Source code
-
-  - `audio_utils.py`: Audio processing utilities3) Train or predict (examples):
-
-  - `models.py`: Model architectures
-
-  - `main.py`: Main execution script```powershell
-
-- `scripts/`: Helper scriptspython -m src.main train --data-dir path\to\dataset --optimize --generations 10
-
-  - `make_sample_dataset.py`: Generate sample datasetpython -m src.main predict --path path\to\sample.wav
-
-  - `prepare_asvspoof2019.py`: ASVspoof2019 dataset preparationpython -m src.main predict --path path\to\directory\with\wavs
-
-  - `compare_ckpts.py`: Compare model checkpoints```
-
-- `tests/`: Unit tests
-
-- `sample_dataset/`: Sample audio files for testingNotes and limitations:
-
-  - `real/`: Real voice samples  - This is a demo pipeline; for production, use a proper labeled dataset (e.g., ASVspoof), stronger features, and a more robust optimizer.
-
-  - `fake/`: Deepfake voice samples- The genetic algorithm implemented is intentionally small and educational.
-
-- `requirements.txt`: Python dependencies
-
-## Testing
+1. Create conda environment:```
 
 ```bash
-pytest tests/
+
+conda env create -f environment.yml2) Run the tests:
+
+conda activate detection
+
+``````powershell
+
+pytest -q
+
+2. Prepare your dataset:```
+
+   - Place real voice samples in `data/real/`
+
+   - Place fake voice samples in `data/fake/`3) Train or predict (examples):
+
+
+
+## Usage```powershell
+
+python -m src.main train --data-dir path\to\dataset --optimize --generations 10
+
+### Trainingpython -m src.main predict --path path\to\sample.wav
+
+python -m src.main predict --path path\to\directory\with\wavs
+
+To train both models:```
+
+
+
+```bashNotes and limitations:
+
+python main.py --mode train --epochs 50- This is a demo pipeline; for production, use a proper labeled dataset (e.g., ASVspoof), stronger features, and a more robust optimizer.
+
+```- The genetic algorithm implemented is intentionally small and educational.
+
+
+### Prediction
+
+For a single audio file:
+```bash
+python main.py --mode predict --input path/to/audio/file.wav
 ```
 
-## License
+For all audio files in a directory:
+```bash
+python main.py --mode predict --input path/to/audio/directory
+```
 
-MIT License
+## Models
+
+### Baseline Model
+- Simple CNN architecture
+- Standard audio feature extraction
+- Basic hyperparameters
+
+### GA-Optimized Model
+- Enhanced architecture with additional layers
+- Bidirectional LSTM layers
+- Optimized hyperparameters
+- Batch normalization for better training
+
+## Features
+
+- MFCC feature extraction with delta and delta-delta
+- Feature normalization
+- Model checkpointing
+- Support for both single file and directory-based prediction
+- Comparative analysis between baseline and GA-optimized models
+
+## Requirements
+
+All dependencies are listed in `environment.yml`. Key dependencies:
+- Python 3.8
+- TensorFlow
+- Librosa
+- NumPy
+- scikit-learn
